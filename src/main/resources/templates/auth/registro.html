@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/head :: head-comun('Crear Cuenta')}"></head>
-<body class="bg-light d-flex align-items-center justify-content-center vh-100">
+<!--<body class="bg-light d-flex align-items-center justify-content-center vh-100">-->
+<body class="bg-light d-flex align-items-center justify-content-center min-vh-100 py-5">
 
     <div class="card shadow-sm p-4 backend-login-card">
         <div class="card-body">
@@ -14,38 +15,57 @@
                 <i class="fa-solid fa-circle-exclamation me-2"></i> <span th:text="${error}"></span>
             </div>
 
-            <form th:action="@{/registro}" th:object="${registroDto}" method="post">
-
-                <div class="mb-3">
+            <form th:action="@{/registro}" th:object="${registroDto}" method="post" autocomplete="off" novalidate>
+				
+				<div class="mb-3">
                     <label for="username" class="form-label text-secondary small">Usuario</label>
                     <div class="input-group">
                         <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Elige un nombre de usuario" required autofocus>
+                        <input type="text" id="username" th:field="*{username}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                               placeholder="Elige un nombre de usuario" autofocus autocomplete="username">
                     </div>
+					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" th:text="${#fields.errors('username')[0]}"></div>
+					
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label text-secondary small">Email</label>
                     <div class="input-group">
                         <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="tu@email.com" required>
+                        <input type="email" id="email" th:field="*{email}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                               placeholder="tu@email.com" autocomplete="email">
                     </div>
+					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('email')}" th:text="${#fields.errors('email')[0]}"></div>
                 </div>
 
-                <div class="mb-3">
+				
+				<div class="mb-3">
                     <label for="password" class="form-label text-secondary small">Contraseña</label>
                     <div class="input-group">
                         <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="••••••••" required>
+                        <input type="password" id="password" th:field="*{password}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                               placeholder="••••••••" autocomplete="new-password">
                     </div>
+					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password')[0]}"></div>
                 </div>
 
-                <div class="mb-4">
+				
+				<div class="mb-4">
                     <label for="confirmPassword" class="form-label text-secondary small">Confirmar contraseña</label>
                     <div class="input-group">
                         <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="••••••••" required>
+                        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'"
+                               placeholder="••••••••" autocomplete="new-password">
                     </div>
+					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('confirmPassword')}" th:text="${#fields.errors('confirmPassword')[0]}"></div>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 py-2">

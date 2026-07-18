@@ -27,9 +27,6 @@ public class AuthService {
         if (userRepository.existsByEmail(dto.email())) {
             throw new IllegalArgumentException("Ese email ya está registrado");
         }
-        if (!dto.password().equals(dto.confirmPassword())) {
-            throw new IllegalArgumentException("Las contraseñas no coinciden");
-        }
 
         User nuevoUsuario = new User(
                 dto.username(),
