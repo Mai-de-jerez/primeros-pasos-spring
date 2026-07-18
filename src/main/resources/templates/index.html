@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head-comun('Home')}"></head>
+<body class="bg-light">
+
+    <!-- Navbar estático (copiado de un fragmento típico) -->
+	<nav th:replace="~{fragments/navbar :: nav-comun}"></nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5">
+        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold text-dark">Bienvenido a mi aplicación</h1>
+                <p class="col-md-8 fs-4 text-muted">Página de inicio en construcción. El sistema de autenticación y la barra de navegación ya están operativos.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

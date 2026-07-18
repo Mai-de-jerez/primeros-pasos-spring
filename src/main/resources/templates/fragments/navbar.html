@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <nav th:fragment="nav-comun" class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid">
+            <!-- Logo / Nombre de la App -->
+            <a class="navbar-brand fw-bold text-primary" th:href="@{/}">
+                <i class="fa-solid fa-code me-2"></i>MiApp
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Enlaces del lado izquierdo -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">Inicio</a>
+                    </li>
+                    <!-- Añade aquí más enlaces en el futuro (ej: Paneles, Listados) -->
+                </ul>
+                
+                <!-- Bloque derecho: Información de usuario y Logout/Login -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Si el usuario está autenticado -->
+                    <th:block th:if="${#authentication.principal != 'anonymousUser'}">
+                        <span class="text-light small">
+                            <i class="fa-solid fa-user-circle me-1 text-muted"></i>
+                            Hola, <strong th:text="${#authentication.name}">Usuario</strong>
+                        </span>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2">
+                                <i class="fa-solid fa-right-from-bracket"></i> Salir
+                            </button>
+                        </form>
+                    </th:block>
+                    
+                    <!-- Si NO está autenticado -->
+                    <th:block th:unless="${#authentication.principal != 'anonymousUser'}">
+                        <a th:href="@{/registro}" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-user-plus"></i> Registro
+                        </a>
+                        <a th:href="@{/login}" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+                        </a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+</body>
+</html>
