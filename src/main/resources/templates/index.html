@@ -1,20 +1,102 @@
+<!--src/main/resources/templates/index.html-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head-comun('Home')}"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Universo Inmerso - Home Temporal</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
 <body class="bg-light">
 
-    <!-- Navbar estático (copiado de un fragmento típico) -->
-	<nav th:replace="~{fragments/navbar :: nav-comun}"></nav>
+    <nav th:replace="~{fragments/navbar :: nav-comun}"></nav>
 
-    <!-- Contenido principal -->
-    <div class="container mt-5">
-        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold text-dark">Bienvenido a mi aplicación</h1>
-                <p class="col-md-8 fs-4 text-muted">Página de inicio en construcción. El sistema de autenticación y la barra de navegación ya están operativos.</p>
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <h1 class="mb-3">
+                        VIVE EL UNIVERSO.<br>
+                        TUS MEJORES PLANES,<br>
+                        TU GENTE DE <span class="accent">15-25</span>.
+                    </h1>
+                    <a href="#" class="btn btn-accent mt-3">
+                        <i class="fa-solid fa-rocket me-2"></i>¡Únete ya y descubre planes!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Próximas experiencias -->
+    <div class="experiencias-section py-5">
+        <div class="container">
+            <p class="section-title mb-4">Próximas experiencias</p>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card experiencia-card h-100">
+                        <img th:src="@{/images/concierto.jpg}" class="card-img-top" alt="Concierto Maná">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Concierto Maná</h5>
+                            <p class="text-muted small mb-1">
+                                <i class="fa-solid fa-calendar-days me-1"></i> 15 Abril, 19:00h, Estadio Santiago Bernabéu
+                            </p>
+							<div class="d-flex justify-content-between align-items-center mb-2">
+	                            <p class="transporte-text">
+	                                <i class="fa-solid fa-bus me-1"></i> ¡Plazas Bus disponibles!
+	                            </p>
+	                            <span class="badge badge-precio mb-2">35€</span>
+							</div>
+                            <a href="#" class="btn btn-turquesa w-100 mt-2">Ver detalles y apuntarme</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card experiencia-card h-100">
+                        <img th:src="@{/images/excursion.jpg}" class="card-img-top" alt="Visita Museo del Prado">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Visita Museo del Prado</h5>
+                            <p class="text-muted small mb-1">
+                                <i class="fa-solid fa-calendar-days me-1"></i> 20 Abril, 16:00h, Museo del Prado
+                            </p>
+							<div class="d-flex justify-content-between align-items-center mb-2">
+	                            <p class="transporte-text">
+	                                <i class="fa-solid fa-bus me-1"></i> Bus inmerso incluido
+	                            </p>
+	                            <span class="badge badge-precio mb-2">29€</span>
+							</div>
+                            <a href="#" class="btn btn-turquesa w-100 mt-2">Ver detalles y apuntarme</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card experiencia-card h-100">
+                        <img th:src="@{/images/museo.jpg}" class="card-img-top" alt="Día de Museo Gratis">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Día de Museo Gratis</h5>
+                            <p class="text-muted small mb-1">
+                                <i class="fa-solid fa-calendar-days me-1"></i> 18 Abril, 10:00h, Museo Picasso Málaga
+                            </p>
+                            							
+							<div class="d-flex justify-content-between align-items-center mb-2">
+								<p class="transporte-text">
+	                                <i class="fa-solid fa-bus me-1"></i> Transporte opcional
+	                            </p>
+	                            <span class="badge badge-precio mb-2">5€</span>
+							</div>
+                            <a href="#" class="btn btn-turquesa w-100 mt-2">Ver detalles y apuntarme</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

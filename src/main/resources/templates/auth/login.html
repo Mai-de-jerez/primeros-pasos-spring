@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head th:replace="~{fragments/head :: head-comun('Iniciar Sesión')}"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Universo Inmerso - Login</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
 <body class="bg-light d-flex align-items-center justify-content-center vh-100">
 
     <div class="card shadow-sm p-4 backend-login-card">
@@ -54,6 +60,6 @@
             </form>
         </div>
     </div>
-
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

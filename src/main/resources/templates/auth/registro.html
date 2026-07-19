@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head th:replace="~{fragments/head :: head-comun('Crear Cuenta')}"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Universo Inmerso - Crear Cuenta</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
 <!--<body class="bg-light d-flex align-items-center justify-content-center vh-100">-->
 <body class="bg-light d-flex align-items-center justify-content-center min-vh-100 py-5">
 
@@ -78,6 +84,6 @@
             </p>
         </div>
     </div>
-
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
