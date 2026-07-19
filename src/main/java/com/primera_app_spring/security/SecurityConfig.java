@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Permitimos que todo el mundo acceda a los WebJars, imágenes y CSS estáticos
-                .requestMatchers("/", "/index", "/webjars/**", "/css/**", "/images/**", "/registro").permitAll()
+                .requestMatchers("/", "/index", "/webjars/**", "/css/**", "/images/**", "/registro", "/recuperar-password", "/reset-password").permitAll()
                 // Cualquier otra petición requerirá autenticación
                 .anyRequest().authenticated()
             )

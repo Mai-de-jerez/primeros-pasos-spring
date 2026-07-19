@@ -22,6 +22,9 @@
 				<div th:if="${param.registroExitoso}" class="alert alert-success p-2 small" role="alert">
                     <i class="fa-solid fa-circle-check me-2"></i> Registro completado. Ya puedes iniciar sesión.
                 </div>
+				<div th:if="${param.resetExitoso}" class="alert alert-success p-2 small" role="alert">
+				    <i class="fa-solid fa-circle-check me-2"></i> Contraseña actualizada. Ya puedes iniciar sesión.
+				</div>
 
                 <!-- Campo Usuario -->
                 <div class="mb-3">
@@ -45,6 +48,9 @@
                 <button type="submit" class="btn btn-primary w-100 py-2">
                     <i class="fa-solid fa-right-to-bracket me-2"></i>Entrar
                 </button>
+				<p class="text-center mt-2 small">
+				    <a th:href="@{/recuperar-password}">¿Olvidaste tu contraseña?</a>
+				</p>
             </form>
         </div>
     </div>
