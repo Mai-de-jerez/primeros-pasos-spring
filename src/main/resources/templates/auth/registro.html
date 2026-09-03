@@ -21,7 +21,7 @@
                 <i class="fa-solid fa-circle-exclamation me-2"></i> <span th:text="${error}"></span>
             </div>
 
-            <form th:action="@{/registro}" th:object="${registroDto}" method="post" autocomplete="off" novalidate>
+			<form th:action="@{/registro}" th:object="${registroDto}" method="post" enctype="multipart/form-data" autocomplete="off" novalidate>
 				
 				<div class="mb-3">
                     <label for="username" class="form-label text-secondary small">Usuario</label>
@@ -72,6 +72,17 @@
                                placeholder="••••••••" autocomplete="new-password">
                     </div>
 					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('confirmPassword')}" th:text="${#fields.errors('confirmPassword')[0]}"></div>
+                </div>
+				
+				<div class="mb-4">
+                    <label for="foto" class="form-label text-secondary small">Foto de perfil</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-image"></i></span>
+                        <input type="file" id="foto" th:field="*{foto}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('foto')} ? 'is-invalid'">
+                    </div>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('foto')}" th:text="${#fields.errors('foto')[0]}"></div>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 py-2">

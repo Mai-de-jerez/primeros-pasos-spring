@@ -20,6 +20,9 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
+    
+    @Column(name = "foto")
+    private String foto;
 
     // Relación para los roles (ADMIN, USER, etc.) 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -30,10 +33,11 @@ public class User {
     // --- CONSTRUCTORES ---
     public User() {}
 
-    public User(String username, String password, String email, Set<String> roles) {
+    public User(String username, String password, String email, String foto,  Set<String> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.foto = foto;
         this.roles = roles;
     }
 
@@ -49,6 +53,9 @@ public class User {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    
+    public String getFoto() { return foto; }
+    public void setFoto(String foto) { this.foto = foto; }
 
     public Set<String> getRoles() { return roles; }
     public void setRoles(Set<String> roles) { this.roles = roles; }
@@ -60,6 +67,7 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", foto='" + foto + '\'' +
                 ", roles=" + roles +
                 '}';
     }

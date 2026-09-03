@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Universo Inmerso - Mi Perfil</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar común -->
+    <nav th:replace="~{fragments/navbar :: nav-comun}"></nav>
+
+    <!-- Contenido principal del perfil -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card experiencia-card p-4">
+                    <div class="card-body text-center">
+                        <h2 class="card-title fw-bold mb-4">Mi Perfil de Usuario</h2>
+                        
+                        <!-- Si el usuario tiene foto, la mostramos redondita y centrada -->
+                        <div class="mb-4" th:if="${user.foto != null}">
+                            <img th:src="@{'/files/' + ${user.foto}}" alt="Foto de perfil" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid var(--color-turquesa);">
+                        </div>
+                        
+                        <!-- Si no tiene foto, mostramos un icono por defecto -->
+                        <div class="mb-4" th:unless="${user.foto != null}">
+                            <i class="fa-solid fa-user-circle text-muted" style="font-size: 150px; color: rgba(255, 255, 255, 0.5) !important;"></i>
+                        </div>
+
+                        <div class="text-start px-md-5">
+                            <p class="fs-5 mb-3"><strong>Nombre de usuario:</strong> <span th:text="${user.username}" style="color: var(--color-accent);"></span></p>
+                            <p class="fs-5 mb-4"><strong>Correo electrónico:</strong> <span th:text="${user.email}" style="color: var(--color-accent);"></span></p>
+                        </div>
+                        
+						<div class="d-flex justify-content-center gap-3 mt-4">
+                            <a th:href="@{/}" class="btn btn-turquesa px-4">
+                                <i class="fa-solid fa-house me-2"></i> Volver al inicio
+                            </a>
+                            <a th:href="@{/perfil/editar}" class="btn btn-turquesa px-4">
+                                <i class="fa-solid fa-user-pen me-2"></i> Actualizar perfil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Universo Inmerso - Editar Perfil</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar común -->
+    <nav th:replace="~{fragments/navbar :: nav-comun}"></nav>
+
+    <!-- Contenido principal -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card experiencia-card p-4">
+                    <div class="card-body">
+                        <h2 class="card-title fw-bold mb-4 text-center">Actualizar Mi Perfil</h2>
+                        
+                        <!-- Formulario de edición -->
+                        <form th:action="@{/perfil/editar}" th:object="${usuarioDto}" method="post" enctype="multipart/form-data">
+                            
+                            <!-- Mensaje de error general si lo hubiera -->
+                            <div th:if="${error}" class="alert alert-danger mb-3" th:text="${error}"></div>
+
+                            <!-- Nombre de usuario -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label text-white fw-semibold">Nombre de usuario</label>
+                                <input type="text" id="username" th:field="*{username}" 
+                                       class="form-control bg-dark text-white border-secondary"
+                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'">
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" 
+                                     th:text="${#fields.errors('username')[0]}"></div>
+                            </div>
+
+                            <!-- Correo electrónico -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label text-white fw-semibold">Correo electrónico</label>
+                                <input type="email" id="email" th:field="*{email}" 
+                                       class="form-control bg-dark text-white border-secondary"
+                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('email')}" 
+                                     th:text="${#fields.errors('email')[0]}"></div>
+                            </div>
+
+                            <!-- Nueva contraseña (opcional) -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label text-white fw-semibold">Nueva contraseña (dejar en blanco para no cambiar)</label>
+                                <input type="password" id="password" th:field="*{password}" 
+                                       autocomplete="new-password" 
+                                       class="form-control bg-dark text-white border-secondary"
+                                       th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'">
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" 
+                                     th:text="${#fields.errors('password')[0]}"></div>
+                            </div>
+
+                            <!-- Confirmar nueva contraseña -->
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label text-white fw-semibold">Confirmar nueva contraseña</label>
+                                <input type="password" id="confirmPassword" th:field="*{confirmPassword}" 
+                                       autocomplete="new-password" 
+                                       class="form-control bg-dark text-white border-secondary"
+                                       th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'">
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('confirmPassword')}" 
+                                     th:text="${#fields.errors('confirmPassword')[0]}"></div>
+                            </div>
+
+                            <!-- Nueva foto de perfil -->
+                            <div class="mb-4">
+                                <label for="foto" class="form-label text-white fw-semibold">Nueva foto de perfil (opcional)</label>
+                                <input type="file" id="foto" name="foto" 
+                                       class="form-control bg-dark text-white border-secondary"
+                                       th:classappend="${#fields.hasErrors('foto')} ? 'is-invalid'" 
+                                       accept="image/*">
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('foto')}" 
+                                     th:text="${#fields.errors('foto')[0]}"></div>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <a th:href="@{/perfil}" class="btn btn-turquesa px-4 d-inline-flex align-items-center justify-content-center text-decoration-none" style="font-weight: 600;">
+                                    <i class="fa-solid fa-arrow-left me-2"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-turquesa px-4 d-inline-flex align-items-center justify-content-center" style="font-weight: 600;">
+                                    <i class="fa-solid fa-floppy-disk me-2"></i> Guardar cambios
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

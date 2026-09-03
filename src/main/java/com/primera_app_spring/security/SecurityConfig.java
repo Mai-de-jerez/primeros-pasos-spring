@@ -27,14 +27,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                // Le decimos a Spring Security cuál es nuestro endpoint GET para mostrar el login
-                .loginPage("/login")
-                // El endpoint POST donde enviará los datos el formulario (lo gestiona Spring solo)
-                .loginProcessingUrl("/login")
-                // Dónde redirigir si el login es correcto (por ejemplo, a la raíz o al home)
-                .defaultSuccessUrl("/", true)
-                // Permitimos a todo el mundo acceder a la URL de login
-                .permitAll()
+                .loginPage("/login")// El endpoint POST donde enviará los datos el formulario                 
+                .loginProcessingUrl("/login")               
+                .defaultSuccessUrl("/", true) // Dónde redirigir si el login es correcto          
+                .permitAll()// Permitimos a todo el mundo acceder a la URL de login
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")

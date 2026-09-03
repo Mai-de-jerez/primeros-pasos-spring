@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.primera_app_spring.dto.NuevaPasswordDto;
 import com.primera_app_spring.dto.RegistroDto;
 import com.primera_app_spring.dto.SolicitarResetDto;
@@ -39,7 +38,7 @@ public class AuthController {
     @GetMapping("/registro")
     public String mostrarFormularioRegistro(Model model) {
         log.info("Accediendo a la página de visualización del formulario de registro");
-        model.addAttribute("registroDto", new RegistroDto("", "", "", ""));
+        model.addAttribute("registroDto", new RegistroDto("", "", "", "", null));
         return "auth/registro";
     }
     

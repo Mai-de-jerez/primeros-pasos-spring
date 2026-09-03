@@ -1,6 +1,9 @@
 package com.primera_app_spring.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.*;
+
 public record RegistroDto(
 
 		@NotBlank(message = "{registro.username.notblank}")
@@ -19,5 +22,11 @@ public record RegistroDto(
         String password,
         
         @NotBlank(message = "{registro.confirmPassword.notblank}")
-        String confirmPassword
+        String confirmPassword,
+        
+        MultipartFile foto
 ) {}
+
+
+
+
