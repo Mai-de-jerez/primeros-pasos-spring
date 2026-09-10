@@ -2,6 +2,7 @@ package com.primera_app_spring.controller;
 
 import com.primera_app_spring.dto.EditarPerfilDto;
 import com.primera_app_spring.model.User;
+import com.primera_app_spring.security.CustomUserDetails;
 import com.primera_app_spring.services.UserService;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
@@ -13,12 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-
-
-import java.security.Principal;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @Controller
 public class PerfilController {
@@ -32,84 +30,74 @@ public class PerfilController {
     }
 
     @GetMapping("/perfil")
-    public String verPerfil(Principal principal, Model model) {
-        log.info("Accediendo a la vista de perfil para el usuario: '{}'", principal.getName());
-
-        User usuario = userService.buscarPorUsername(principal.getName());
-
-        model.addAttribute("user", usuario);
+    public String verPerfil(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        log.info("Accediendo a la vista de perfil para el usuario: '{}'", userDetails.getUsername());
+        
+        // Le pasamos al modelo directamente el objeto cargado desde la sesión
+        model.addAttribute("user", userDetails);
         return "usuario/perfil";
     }
     
+    
     @GetMapping("/perfil/editar")
-    public String mostrarFormularioEdicion(Principal principal, Model model) {
-        log.info("Accediendo al formulario de edición de perfil para: '{}'", principal.getName());
+    public String mostrarFormularioEdicion(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        
+    	log.info("Accediendo al formulario de edición de perfil para: '{}'", userDetails.getUsername());
 
-        User usuario = userService.buscarPorUsername(principal.getName());
-        
-        // Precargamos el DTO con los datos actuales (contraseñas vacías)
-        EditarPerfilDto usuarioDto = new EditarPerfilDto(usuario.getUsername(), usuario.getEmail(), "", "", null);
+        EditarPerfilDto usuarioDto = new EditarPerfilDto(userDetails.getUsername(), userDetails.getEmail(), "", "", null);
         model.addAttribute("usuarioDto", usuarioDto);
-        
+
         return "usuario/editar-perfil";
     }
     
-        
-    
+           
     @PostMapping("/perfil/editar")
-    public String procesarEdicion(Principal principal,
+    public String procesarEdicion(@AuthenticationPrincipal CustomUserDetails userDetailsActual,
                                   @Valid @ModelAttribute("usuarioDto") EditarPerfilDto usuarioDto,
                                   BindingResult bindingResult,  
                                   Model model,
                                   HttpServletRequest request,
                                   HttpServletResponse response) {
-        log.info("Procesando actualización de perfil para el usuario: '{}'", principal.getName());
+        
+        log.info("Procesando actualización de perfil para el usuario: '{}'", userDetailsActual.getUsername());
             
         
-        // Validación de patrón de contraseña (solo si se ha rellenado)
+        // validaciones de contraseñas 
         if (!usuarioDto.password().isEmpty()) {
             if (!usuarioDto.password().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")) {
-                log.warn("Error en el formulario: La contraseña no cumple el patrón de seguridad para '{}'", principal.getName());
                 bindingResult.rejectValue("password", "perfil.password.pattern", 
-                    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial");
+                    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
             }
-            
-            // Validación de contraseñas coincidentes
             if (!usuarioDto.password().equals(usuarioDto.confirmPassword())) {
-                log.warn("Error en el formulario: Las contraseñas no coinciden para el usuario '{}'", principal.getName());
                 bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "Las contraseñas no coinciden");
             }
         }
 
-        // Control de fallos de validación
         if (bindingResult.hasErrors()) {
-            log.warn("El formulario de edición contiene {} error(es) de validación. Recargando vista", bindingResult.getErrorCount());
             return "usuario/editar-perfil";
         }
 
         try {
-            User actualizado = userService.actualizarPerfil(principal.getName(), usuarioDto);
+            // Actualizamos db
+            User actualizado = userService.actualizarPerfil(userDetailsActual.getUsername(), usuarioDto);
+            CustomUserDetails nuevoUserDetails = new CustomUserDetails(actualizado);
 
-            // Actualizar contexto de seguridad
+            // actualizamos e contexto
             var auth = new UsernamePasswordAuthenticationToken(
-                    actualizado.getUsername(), null,
-                    AuthorityUtils.createAuthorityList(actualizado.getRoles().toArray(new String[0])));
+                    nuevoUserDetails, 
+                    null, 
+                    nuevoUserDetails.getAuthorities()
+            );
             SecurityContextHolder.getContext().setAuthentication(auth);
+            
             new HttpSessionSecurityContextRepository()
                     .saveContext(SecurityContextHolder.getContext(), request, response);
 
-            log.info("Perfil actualizado con éxito para '{}'", principal.getName());
+            log.info("Perfil y sesión de Redis actualizados con éxito para '{}'", actualizado.getUsername());
             return "redirect:/perfil?actualizado";
             
-        } catch (IllegalArgumentException e) {
-            // Capturar errores de negocio (username o email duplicado)
-            log.warn("Error controlado durante la actualización de perfil de '{}': {}", principal.getName(), e.getMessage());
-            model.addAttribute("error", e.getMessage());
-            return "usuario/editar-perfil";
-            
         } catch (RuntimeException e) {
-            // Capturar errores inesperados (foto, etc.)
-            log.warn("Error inesperado al actualizar el perfil de '{}': {}", principal.getName(), e.getMessage());
+            log.warn("Error al actualizar perfil: {}", e.getMessage());
             model.addAttribute("error", e.getMessage());
             return "usuario/editar-perfil";
         }

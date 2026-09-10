@@ -67,25 +67,7 @@ public class PasswordResetService {
         mailSender.send(mensaje);
     }
 
-    
-	/*
-	 * @Transactional public void cambiarPassword(NuevaPasswordDto dto) { if
-	 * (!dto.password().equals(dto.confirmPassword())) { throw new
-	 * IllegalArgumentException("Las contraseñas no coinciden"); }
-	 * 
-	 * PasswordResetToken resetToken = tokenRepository.findByToken(dto.token())
-	 * .orElseThrow(() -> new IllegalArgumentException("El enlace no es válido"));
-	 * 
-	 * if (resetToken.isExpired(EXPIRATION_MINUTES)) {
-	 * tokenRepository.delete(resetToken); throw new
-	 * IllegalArgumentException("El enlace ha caducado, solicita uno nuevo"); }
-	 * 
-	 * User usuario = userRepository.findByEmail(resetToken.getEmail())
-	 * .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-	 * 
-	 * usuario.setPassword(passwordEncoder.encode(dto.password()));
-	 * userRepository.save(usuario); tokenRepository.delete(resetToken); }
-	 */
+
     
     @Transactional
     public void cambiarPassword(NuevaPasswordDto dto) {

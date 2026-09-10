@@ -9,8 +9,9 @@ import java.util.Optional;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    // Métodos mágicos de Spring Data para buscar en el registro
-    Optional<User> findByUsername(String username);
+    // Métodos mágicos de Spring Data para buscar en el registro   
+    @EntityGraph(attributePaths = {"roles"})
+    Optional<User> findByUsername(String username);    
     Optional<User> findByEmail(String email);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

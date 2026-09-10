@@ -21,12 +21,12 @@
                         <h2 class="card-title fw-bold mb-4 text-center">Actualizar Mi Perfil</h2>
                         
                         <!-- Formulario de edición -->
-                        <form th:action="@{/perfil/editar}" th:object="${usuarioDto}" method="post" enctype="multipart/form-data">
+                        <form id="formEditarPerfil" th:action="@{/perfil/editar}" th:object="${usuarioDto}" method="post" enctype="multipart/form-data">
+							
+							<!-- Mensaje de error general si lo hubiera -->
+							<div class="alert alert-danger mb-3" th:style="${error} == null ? 'display:none' : ''" th:text="${error}"></div>
                             
-                            <!-- Mensaje de error general si lo hubiera -->
-                            <div th:if="${error}" class="alert alert-danger mb-3" th:text="${error}"></div>
-
-                            <!-- Nombre de usuario -->
+							<!-- Nombre de usuario -->
                             <div class="mb-3">
                                 <label for="username" class="form-label text-white fw-semibold">Nombre de usuario</label>
                                 <input type="text" id="username" th:field="*{username}" 
@@ -97,5 +97,46 @@
     </div>
 
     <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<script>		
+		// Función reutilizable para mostrar y autolimpiar el mensaje de error
+		function mostrarError(mensaje) {
+		    const errorDiv = document.querySelector('.alert-danger');
+		    if (!errorDiv) return;
+
+		    errorDiv.textContent = mensaje;
+		    errorDiv.style.display = 'block';
+
+		    setTimeout(() => {
+		        errorDiv.textContent = '';
+		        errorDiv.style.display = 'none';
+		    }, 3000);
+		}
+
+		// Al cargar la página: si Thymeleaf ya pintó un error del servidor, que también desaparezca solo
+		document.addEventListener('DOMContentLoaded', function() {
+		    const errorDiv = document.querySelector('.alert-danger');
+		    if (errorDiv && errorDiv.textContent.trim() !== '') {
+		        setTimeout(() => {
+		            errorDiv.textContent = '';
+		            errorDiv.style.display = 'none';
+		        }, 3000);
+		    }
+		});
+
+		// validación de tamaño de foto
+		document.getElementById('formEditarPerfil').addEventListener('submit', function(e) {
+		    const fotoInput = document.getElementById('foto');
+		    const maxSizeMB = 5;
+
+		    if (fotoInput.files.length > 0) {
+		        const fileSizeMB = fotoInput.files[0].size / (1024 * 1024);
+		        if (fileSizeMB > maxSizeMB) {
+		            e.preventDefault();
+		            mostrarError(`La imagen no puede superar los ${maxSizeMB}MB (tu archivo pesa ${fileSizeMB.toFixed(1)}MB)`);
+		        }
+		    }
+		});
+		
+    </script>
 </body>
 </html>

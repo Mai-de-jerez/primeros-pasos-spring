@@ -73,31 +73,36 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<!-- Módulo oficial para testing de contexto de seguridad -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
-			<scope>test</scope>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+		    <scope>test</scope>
 		</dependency>
+		
+				
+		<!-- Starter de test para JPA -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail-test</artifactId>
-			<scope>test</scope>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+		    <scope>test</scope>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security-test</artifactId>
-			<scope>test</scope>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-webmvc-test</artifactId>
+		    <scope>test</scope>
 		</dependency>
+		
+		<!-- Starter de test para JDBC (necesario para @AutoConfigureTestDatabase) -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf-test</artifactId>
-			<scope>test</scope>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-jdbc-test</artifactId>
+		    <scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+
+
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-validation</artifactId>
@@ -113,6 +118,11 @@
 		<dependency>
 		    <groupId>org.springframework.session</groupId>
 		    <artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-session-data-redis</artifactId>
 		</dependency>
 		
 		<!--Webjars-->

@@ -28,9 +28,7 @@ public class AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.storageService = storageService;
-    }
-
-    
+    }    
     
     /**
      * Registra un nuevo usuario en el sistema aplicando las reglas de negocio de registro.
@@ -54,7 +52,7 @@ public class AuthService {
             throw new IllegalArgumentException("Ese email ya está registrado");
         }
 
-        // 1. Guardamos primero el usuario con la foto a null para que obtenga su ID autogenerado
+        // Guardamos primero el usuario con la foto a null para que obtenga su ID autogenerado
         User nuevoUsuario = new User(
                 dto.username(),
                 passwordEncoder.encode(dto.password()), 
@@ -65,7 +63,7 @@ public class AuthService {
 
         User usuarioGuardado = userRepository.save(nuevoUsuario);
 
-        // 2. Procesamos la foto si viene adjunta en el DTO
+        // Procesamos la foto si viene adjunta en el DTO
         MultipartFile foto = dto.foto();
         if (foto != null && !foto.isEmpty()) {
             String nombreFichero = null;

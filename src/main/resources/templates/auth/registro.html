@@ -7,23 +7,27 @@
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
-<!--<body class="bg-light d-flex align-items-center justify-content-center vh-100">-->
-<body class="bg-light d-flex align-items-center justify-content-center min-vh-100 py-5">
 
-    <div class="card shadow-sm p-4 backend-login-card">
+<body class="bg-light d-flex align-items-center justify-content-center min-vh-100 py-5">
+	
+	<div class="card shadow-sm p-4 backend-login-card" style="max-width: 600px; width: 100%;">
         <div class="card-body">
             <div class="text-center mb-4">
                 <i class="fa-solid fa-user-plus fa-3x text-primary"></i>
                 <h2 class="mt-3 h4">Crear Cuenta</h2>
             </div>
 
-            <div th:if="${error}" class="alert alert-danger p-2 small" role="alert">
-                <i class="fa-solid fa-circle-exclamation me-2"></i> <span th:text="${error}"></span>
+            <!-- Contenedor dinámico para errores de javascript y del servidor -->
+            <div class="alert alert-danger p-2 small" 
+                 th:style="${error} == null ? 'display:none' : ''" 
+                 role="alert">
+                <i class="fa-solid fa-circle-exclamation me-2"></i>
+                <span id="mensajeErrorText" th:text="${error}"></span>
             </div>
 
-			<form th:action="@{/registro}" th:object="${registroDto}" method="post" enctype="multipart/form-data" autocomplete="off" novalidate>
-				
-				<div class="mb-3">
+            <form id="formRegistro" th:action="@{/registro}" th:object="${registroDto}" method="post" enctype="multipart/form-data" autocomplete="off" novalidate>
+                
+                <div class="mb-3">
                     <label for="username" class="form-label text-secondary small">Usuario</label>
                     <div class="input-group">
                         <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-user"></i></span>
@@ -32,8 +36,7 @@
                                th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
                                placeholder="Elige un nombre de usuario" autofocus autocomplete="username">
                     </div>
-					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" th:text="${#fields.errors('username')[0]}"></div>
-					
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" th:text="${#fields.errors('username')[0]}"></div>
                 </div>
 
                 <div class="mb-3">
@@ -45,42 +48,44 @@
                                th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
                                placeholder="tu@email.com" autocomplete="email">
                     </div>
-					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('email')}" th:text="${#fields.errors('email')[0]}"></div>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('email')}" th:text="${#fields.errors('email')[0]}"></div>
                 </div>
 
-				
-				<div class="mb-3">
-                    <label for="password" class="form-label text-secondary small">Contraseña</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="password" th:field="*{password}" 
-                               class="form-control" 
-                               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
-                               placeholder="••••••••" autocomplete="new-password">
+                <!-- Fila de Contraseñas -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label text-secondary small">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="password" th:field="*{password}" 
+                                   class="form-control" 
+                                   th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                                   placeholder="••••••••" autocomplete="new-password">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password')[0]}"></div>
                     </div>
-					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password')[0]}"></div>
-                </div>
 
-				
-				<div class="mb-4">
-                    <label for="confirmPassword" class="form-label text-secondary small">Confirmar contraseña</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" 
-                               class="form-control" 
-                               th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'"
-                               placeholder="••••••••" autocomplete="new-password">
+                    <div class="col-md-6 mb-3">
+                        <label for="confirmPassword" class="form-label text-secondary small">Confirmar contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" 
+                                   class="form-control" 
+                                   th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'"
+                                   placeholder="••••••••" autocomplete="new-password">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('confirmPassword')}" th:text="${#fields.errors('confirmPassword')[0]}"></div>
                     </div>
-					<div class="invalid-feedback d-block" th:if="${#fields.hasErrors('confirmPassword')}" th:text="${#fields.errors('confirmPassword')[0]}"></div>
                 </div>
-				
-				<div class="mb-4">
+                
+                <div class="mb-4">
                     <label for="foto" class="form-label text-secondary small">Foto de perfil</label>
                     <div class="input-group">
                         <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-image"></i></span>
-                        <input type="file" id="foto" th:field="*{foto}" 
+                        <input type="file" id="foto" name="foto" 
                                class="form-control" 
-                               th:classappend="${#fields.hasErrors('foto')} ? 'is-invalid'">
+                               th:classappend="${#fields.hasErrors('foto')} ? 'is-invalid'"
+                               accept="image/*">
                     </div>
                     <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('foto')}" th:text="${#fields.errors('foto')[0]}"></div>
                 </div>
@@ -96,5 +101,64 @@
         </div>
     </div>
 	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	
+	<script>
+	    function mostrarError(mensaje) {
+	        const errorDiv = document.querySelector('.alert-danger');
+	        const errorText = document.getElementById('mensajeErrorText');
+	        if (!errorDiv || !errorText) return;
+
+	        errorText.textContent = mensaje;
+	        errorDiv.style.display = 'block';
+
+	        setTimeout(() => {
+	            errorText.textContent = '';
+	            errorDiv.style.display = 'none';
+	        }, 4000);
+	    }
+
+	    document.addEventListener('DOMContentLoaded', function() {
+	        // Ocultar el mensaje de error del servidor tras 4 segundos
+	        const errorText = document.getElementById('mensajeErrorText');
+	        const errorDiv = document.querySelector('.alert-danger');
+	        if (errorText && errorText.textContent.trim() !== '') {
+	            setTimeout(() => {
+	                errorText.textContent = '';
+	                errorDiv.style.display = 'none';
+	            }, 4000);
+	        }
+
+	        const formRegistro = document.getElementById('formRegistro');
+	        const fotoInput = document.getElementById('foto');
+	        const maxSizeMB = 5;
+
+	        // Control al seleccionar el archivo (Limpia el input si se pasa)
+	        if (fotoInput) {
+	            fotoInput.addEventListener('change', function() {
+	                if (this.files.length > 0) {
+	                    const fileSizeMB = this.files[0].size / (1024 * 1024);
+	                    if (fileSizeMB > maxSizeMB) {
+	                        mostrarError(`La imagen sobrepasa los ${maxSizeMB}MB permitidos (pesa ${fileSizeMB.toFixed(1)}MB).`);
+	                        this.value = ''; // Vacía el input
+	                    }
+	                }
+	            });
+	        }
+
+	        // Control al enviar el formulario
+	        if (formRegistro) {
+	            formRegistro.addEventListener('submit', function(e) {
+	                if (fotoInput && fotoInput.files.length > 0) {
+	                    const fileSizeMB = fotoInput.files[0].size / (1024 * 1024);
+	                    if (fileSizeMB > maxSizeMB) {
+	                        e.preventDefault();
+	                        mostrarError(`La imagen sobrepasa los ${maxSizeMB}MB permitidos (pesa ${fileSizeMB.toFixed(1)}MB).`);
+	                    }
+	                }
+	            });
+	        }
+	    });
+	</script>
+
 </body>
 </html>
