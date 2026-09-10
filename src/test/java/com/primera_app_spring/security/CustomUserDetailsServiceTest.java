@@ -16,7 +16,7 @@ class CustomUserDetailsServiceTest {
     @Test
     void medirRendimientoCargaUsuario() {
         // Asegúrate de tener un usuario creado en la base de datos de test con este username
-        String usernamePrueba = "Mai";
+        String usernamePrueba = "mai";
 
         // 1. Tomamos el tiempo justo antes de la llamada
         long inicio = System.currentTimeMillis();
