@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails, Serializable {
     // 1. Constructor vacío obligatorio para que Redis pueda deserializarlo
     public CustomUserDetails() {}
 
-    // 2. Constructor que copia los datos desde tu Entidad JPA (incluyendo foto y email)
+    // 2. Constructor que copia los datos desde tu Entidad JPA 
     public CustomUserDetails(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
