@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -14,6 +15,7 @@ class CustomUserDetailsServiceTest {
     private CustomUserDetailsService userDetailsService;
 
     @Test
+    @Sql(statements = "INSERT INTO usuarios (id, username, password, email) VALUES (999, 'mai', '1234', 'mai@test.com') ON DUPLICATE KEY UPDATE username='mai'")
     void medirRendimientoCargaUsuario() {
         // Asegúrate de tener un usuario creado en la base de datos de test con este username
         String usernamePrueba = "mai";
