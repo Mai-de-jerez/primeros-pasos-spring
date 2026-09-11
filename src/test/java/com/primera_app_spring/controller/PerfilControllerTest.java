@@ -17,12 +17,10 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import java.util.Set;
-
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class PerfilControllerTest {
@@ -74,7 +72,8 @@ class PerfilControllerTest {
                         .param("password", "")
                         .param("confirmPassword", ""))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/perfil?actualizado"));
+                .andExpect(redirectedUrl("/perfil"))
+                .andExpect(flash().attribute("mensajeExito", "Perfil actualizado correctamente"));
 
         verify(userService, times(1)).actualizarPerfil(eq("mai"), any(EditarPerfilDto.class));
     }
