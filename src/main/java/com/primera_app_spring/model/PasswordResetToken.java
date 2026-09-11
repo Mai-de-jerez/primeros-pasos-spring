@@ -7,10 +7,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "password_reset_token")
 public class PasswordResetToken {
-
-    @Id // Clave primaria directa sin auto-incremento (PK y NN)
-    @Column(length = 255)
-    private String email;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private User usuario;
 
     @Column(nullable = false, length = 255)
     private String token;
@@ -19,13 +23,15 @@ public class PasswordResetToken {
     private LocalDateTime createdAt;
 
     // --- CONSTRUCTORES ---
+    
     public PasswordResetToken() {}
 
-    public PasswordResetToken(String email, String token) {
-        this.email = email;
+    public PasswordResetToken(User usuario, String token) {
+        this.usuario = usuario;
         this.token = token;
         this.createdAt = LocalDateTime.now();
     }
+    
 
     // --- LÓGICA DE CONTROL ---
     /**
@@ -36,8 +42,12 @@ public class PasswordResetToken {
     }
 
     // --- GETTERS Y SETTERS ---
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public User getUsuario() { return usuario; }
+    public void setUsuario(User usuario) { this.usuario = usuario; }
 
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }

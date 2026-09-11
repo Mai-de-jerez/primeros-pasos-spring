@@ -35,6 +35,7 @@ public class PasswordResetService {
         this.mailSender = mailSender;
     }
 
+    
     @Transactional
     public void solicitarRecuperacion(SolicitarResetDto dto) {
         Optional<User> userOpt = userRepository.findByEmail(dto.email());
@@ -44,12 +45,13 @@ public class PasswordResetService {
         }
 
         String token = UUID.randomUUID().toString();
-        PasswordResetToken resetToken = new PasswordResetToken(dto.email(), token);
+        PasswordResetToken resetToken = new PasswordResetToken(userOpt.get(), token);
         tokenRepository.save(resetToken);
 
         enviarEmailRecuperacion(dto.email(), token);
     }
-
+    
+    
     private void enviarEmailRecuperacion(String destinatario, String token) {
         String enlace = "http://localhost:8082/reset-password?token=" + token;
 
@@ -67,7 +69,6 @@ public class PasswordResetService {
         mailSender.send(mensaje);
     }
 
-
     
     @Transactional
     public void cambiarPassword(NuevaPasswordDto dto) {
@@ -84,7 +85,8 @@ public class PasswordResetService {
         }
 
         String passwordEncriptada = passwordEncoder.encode(dto.password());
-        int filasActualizadas = userRepository.updatePasswordByEmail(resetToken.getEmail(), passwordEncriptada);
+        int filasActualizadas = userRepository.updatePasswordByEmail(
+                resetToken.getUsuario().getEmail(), passwordEncriptada);
 
         if (filasActualizadas == 0) {
             throw new IllegalArgumentException("Usuario no encontrado");

@@ -16,6 +16,14 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
+				<!-- Mensaje de éxito tras actualizar perfil (flash attribute) -->
+				<div class="alert alert-success p-2 small"
+				     th:if="${mensajeExito != null}"
+				     role="alert"
+				     id="alertaExito">
+				    <i class="fa-solid fa-circle-check me-2"></i>
+				    <span th:text="${mensajeExito}"></span>
+				</div>
                 <div class="card experiencia-card p-4">
                     <div class="card-body text-center">
                         <h2 class="card-title fw-bold mb-4">Mi Perfil de Usuario</h2>
@@ -50,5 +58,15 @@
     </div>
 
     <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<script>
+	    document.addEventListener('DOMContentLoaded', function() {
+	        const alerta = document.getElementById('alertaExito');
+	        if (alerta) {
+	            setTimeout(() => {
+	                alerta.style.display = 'none';
+	            }, 2000);
+	        }
+	    });
+	</script>
 </body>
 </html>

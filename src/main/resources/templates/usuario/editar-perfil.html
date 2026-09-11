@@ -21,10 +21,15 @@
                         <h2 class="card-title fw-bold mb-4 text-center">Actualizar Mi Perfil</h2>
                         
                         <!-- Formulario de edición -->
-                        <form id="formEditarPerfil" th:action="@{/perfil/editar}" th:object="${usuarioDto}" method="post" enctype="multipart/form-data">
+                        <form id="formEditarPerfil" th:action="@{/perfil/editar}" th:object="${usuarioDto}" method="post" enctype="multipart/form-data" novalidate>
 							
-							<!-- Mensaje de error general si lo hubiera -->
-							<div class="alert alert-danger mb-3" th:style="${error} == null ? 'display:none' : ''" th:text="${error}"></div>
+							<!-- Mensaje de error general (JS + servidor) -->
+							<div class="alert alert-danger p-2 small"
+							     th:style="${error} == null ? 'display:none' : ''"
+							     role="alert">
+							    <i class="fa-solid fa-circle-exclamation me-2"></i>
+							    <span id="mensajeErrorText" th:text="${error}"></span>
+							</div>
                             
 							<!-- Nombre de usuario -->
                             <div class="mb-3">
@@ -97,46 +102,62 @@
     </div>
 
     <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
-	<script>		
-		// Función reutilizable para mostrar y autolimpiar el mensaje de error
-		function mostrarError(mensaje) {
-		    const errorDiv = document.querySelector('.alert-danger');
-		    if (!errorDiv) return;
+	<script>
+	    function mostrarError(mensaje) {
+	        const errorDiv = document.querySelector('.alert-danger');
+	        const errorText = document.getElementById('mensajeErrorText');
+	        if (!errorDiv || !errorText) return;
 
-		    errorDiv.textContent = mensaje;
-		    errorDiv.style.display = 'block';
+	        errorText.textContent = mensaje;
+	        errorDiv.style.display = 'block';
 
-		    setTimeout(() => {
-		        errorDiv.textContent = '';
-		        errorDiv.style.display = 'none';
-		    }, 3000);
-		}
+	        setTimeout(() => {
+	            errorText.textContent = '';
+	            errorDiv.style.display = 'none';
+	        }, 4000);
+	    }
 
-		// Al cargar la página: si Thymeleaf ya pintó un error del servidor, que también desaparezca solo
-		document.addEventListener('DOMContentLoaded', function() {
-		    const errorDiv = document.querySelector('.alert-danger');
-		    if (errorDiv && errorDiv.textContent.trim() !== '') {
-		        setTimeout(() => {
-		            errorDiv.textContent = '';
-		            errorDiv.style.display = 'none';
-		        }, 3000);
-		    }
-		});
+	    document.addEventListener('DOMContentLoaded', function() {
+	        // Ocultar el mensaje de error del servidor tras 4 segundos
+	        const errorText = document.getElementById('mensajeErrorText');
+	        const errorDiv = document.querySelector('.alert-danger');
+	        if (errorText && errorText.textContent.trim() !== '') {
+	            setTimeout(() => {
+	                errorText.textContent = '';
+	                errorDiv.style.display = 'none';
+	            }, 4000);
+	        }
 
-		// validación de tamaño de foto
-		document.getElementById('formEditarPerfil').addEventListener('submit', function(e) {
-		    const fotoInput = document.getElementById('foto');
-		    const maxSizeMB = 5;
+	        const formEditarPerfil = document.getElementById('formEditarPerfil');
+	        const fotoInput = document.getElementById('foto');
+	        const maxSizeMB = 5;
 
-		    if (fotoInput.files.length > 0) {
-		        const fileSizeMB = fotoInput.files[0].size / (1024 * 1024);
-		        if (fileSizeMB > maxSizeMB) {
-		            e.preventDefault();
-		            mostrarError(`La imagen no puede superar los ${maxSizeMB}MB (tu archivo pesa ${fileSizeMB.toFixed(1)}MB)`);
-		        }
-		    }
-		});
-		
-    </script>
+	        // Control al seleccionar el archivo (Limpia el input si se pasa)
+	        if (fotoInput) {
+	            fotoInput.addEventListener('change', function() {
+	                if (this.files.length > 0) {
+	                    const fileSizeMB = this.files[0].size / (1024 * 1024);
+	                    if (fileSizeMB > maxSizeMB) {
+	                        mostrarError(`La imagen sobrepasa los ${maxSizeMB}MB permitidos (pesa ${fileSizeMB.toFixed(1)}MB).`);
+	                        this.value = ''; // Vacía el input
+	                    }
+	                }
+	            });
+	        }
+
+	        // Control al enviar el formulario
+	        if (formEditarPerfil) {
+	            formEditarPerfil.addEventListener('submit', function(e) {
+	                if (fotoInput && fotoInput.files.length > 0) {
+	                    const fileSizeMB = fotoInput.files[0].size / (1024 * 1024);
+	                    if (fileSizeMB > maxSizeMB) {
+	                        e.preventDefault();
+	                        mostrarError(`La imagen sobrepasa los ${maxSizeMB}MB permitidos (pesa ${fileSizeMB.toFixed(1)}MB).`);
+	                    }
+	                }
+	            });
+	        }
+	    });
+	</script>
 </body>
 </html>

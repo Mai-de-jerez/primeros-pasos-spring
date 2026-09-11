@@ -78,7 +78,7 @@ class PasswordResetServiceTest {
     @DisplayName("cambiarPassword - Debe cambiar la contraseña y eliminar el token si todo es válido")
     void testCambiarPasswordExito() {
         NuevaPasswordDto dto = new NuevaPasswordDto("token-valido", "NuevaClave123", "NuevaClave123");
-        PasswordResetToken tokenMock = spy(new PasswordResetToken("may@ejemplo.com", "token-valido"));
+        PasswordResetToken tokenMock = spy(new PasswordResetToken(usuarioEjemplo, "token-valido"));
 
         when(tokenRepository.findByToken("token-valido")).thenReturn(Optional.of(tokenMock));
         when(tokenMock.isExpired(anyInt())).thenReturn(false);
@@ -104,7 +104,7 @@ class PasswordResetServiceTest {
     @DisplayName("cambiarPassword - Debe lanzar excepción y borrar token si el enlace ha caducado")
     void testCambiarPasswordTokenCaducado() {
         NuevaPasswordDto dto = new NuevaPasswordDto("token-caducado", "NuevaClave123", "NuevaClave123");
-        PasswordResetToken tokenMock = spy(new PasswordResetToken("may@ejemplo.com", "token-caducado"));
+        PasswordResetToken tokenMock = spy(new PasswordResetToken(usuarioEjemplo, "token-caducado"));
 
         when(tokenRepository.findByToken("token-caducado")).thenReturn(Optional.of(tokenMock));
         when(tokenMock.isExpired(anyInt())).thenReturn(true);
